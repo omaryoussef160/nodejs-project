@@ -17,6 +17,6 @@
 //     });
 //   });
 // };
-import app from "../src/app.js";
+const app = require("../app");
 
-export default app;
+module.exports = app;
