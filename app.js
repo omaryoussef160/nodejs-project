@@ -1,12 +1,11 @@
-
 require("dotenv").config();
-const connectDB = require("./config/db");
-connectDB();
 const express = require("express");
 
 const helmet = require("helmet");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
+
+const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -15,34 +14,33 @@ const groupRoutes = require("./routes/groupRoutes");
 const { globalErrorHandler, notFound } = require("./middleware/errorHandler");
 
 const app = express();
+
 app.set("trust proxy", 1);
 
+// ✅ connect DB per request (serverless fix)
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
 app.use(helmet());
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json({ limit: "12kb" }));
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: Number(process.env.AUTH_RATE_LIMIT_MAX) || 30,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { status: "error", message: "Too many auth requests, try again later" },
 });
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: Number(process.env.API_RATE_LIMIT_MAX) || 500,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { status: "error", message: "Too many requests, try again later" },
 });
 
-app.get("/health", (req, res) => {
-  res.json({ status: "success", message: "ok" });
-});
 app.get("/", (req, res) => {
-  res.json({ status: "success", message: "Blog API is running" });
+  res.json({ status: "success", message: "Omar Blog API running" });
 });
+
 app.use("/auth", authLimiter, authRoutes);
 app.use(apiLimiter);
 
