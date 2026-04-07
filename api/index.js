@@ -1,0 +1,22 @@
+// require("dotenv").config();
+// const connectDB = require("../config/db");
+// const app = require("../app");
+
+// let isConnected = false;
+
+// module.exports = async (req, res) => {
+//   if (!isConnected) {
+//     await connectDB();
+//     isConnected = true;
+//   }
+
+//   return new Promise((resolve, reject) => {
+//     app(req, res, (err) => {
+//       if (err) reject(err);
+//       else resolve();
+//     });
+//   });
+// };
+import app from "../src/app.js";
+
+export default app;
