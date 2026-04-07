@@ -1,7 +1,7 @@
 {
-  "name": "task-node-blog-api",
+ "name": "task-node-blog-api",
   "version": "1.0.0",
-  "description": "Blog API — Express, MongoDB, JWT, ImageKit, groups, RBAC",
+  "type": "module", 
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
