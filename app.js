@@ -1,6 +1,7 @@
+
+require("dotenv").config();
 const connectDB = require("./config/db");
 connectDB();
-require("dotenv").config();
 const express = require("express");
 
 const helmet = require("helmet");
