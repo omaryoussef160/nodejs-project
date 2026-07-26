@@ -1,22 +1,19 @@
-// require("dotenv").config();
-// const connectDB = require("../config/db");
-// const app = require("../app");
+require("dotenv").config();
+const connectDB = require("../config/db");
+const app = require("../app");
 
-// let isConnected = false;
+let isConnected = false;
 
-// module.exports = async (req, res) => {
-//   if (!isConnected) {
-//     await connectDB();
-//     isConnected = true;
-//   }
+module.exports = async (req, res) => {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
 
-//   return new Promise((resolve, reject) => {
-//     app(req, res, (err) => {
-//       if (err) reject(err);
-//       else resolve();
-//     });
-//   });
-// };
-module.exports = (req, res) => {
-  res.status(200).json({ message: "Vercel working ✅" });
+  return new Promise((resolve, reject) => {
+    app(req, res, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
 };
